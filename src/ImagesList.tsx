@@ -49,9 +49,13 @@ export default function MediaList() {
       .fetchAll()
       .then((res) => {
         setMediaList(res.data);
-        console.log(res.data);
+        console.log(mediaList);
       })
       .catch((err) => console.log(err));
+  }
+  function getList(){
+    console.log(mediaList);
+    refreshMediaList();
   }
   const EditData = (formData: FormData, onSuccess: () => void) =>{
     mediaAPI()
@@ -107,7 +111,7 @@ export default function MediaList() {
         .catch((err) => console.log(err));
   };
 
-  const imageCard = (data:RequestAPI) => (
+  const imageCard = (data:ResponseAPI) => (
     <div className="card">     
       <LazyLoad>
           <img src={data.url} className="card-img-top rounded-circle" alt="img" />
@@ -128,17 +132,20 @@ export default function MediaList() {
           }}
           style={{padding:0}}
         >
-            <ViewEditDialog
-                addOrEdit={addOrEdit}
-                recordForEdit={recordForEdit}
-                onDelete={onDelete}
-            />
+        <ViewEditDialog
+            addOrEdit={addOrEdit}
+            recordForEdit={recordForEdit}
+            onDelete={onDelete}
+        />
         </div>
       </div>
     </div>
   );
 return (
-    <>   
+    <>  
+      {/* {[...Array(mediaList.length)].map((item,index) => (
+        <img src={String(item.url)} alt="img" />
+      ))} */}
         <UploadDialog
         addOrEdit={addOrEdit}
         />      
@@ -152,6 +159,7 @@ return (
             </div>
             <Row gutter={[16, 16]} >
               <div>Hello</div>
+              <button onClick={() => getList()}>Get</button>
                     {
                       [...Array(mediaList.length)].map((e, i) => (
                           <Col span={4} key={i} xs={16} sm={16} md={8} lg={8} xl={4} >
@@ -166,7 +174,7 @@ return (
                       ))
                     }
             </Row> 
-        </div>
+        </div>        
     </>
   );
 }
